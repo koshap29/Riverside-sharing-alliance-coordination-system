@@ -1,0 +1,457 @@
+CREATE SCHEMA `sitedb` ;
+
+CREATE TABLE `sitedb`.`site` (
+  `Id` VARCHAR(20) NOT NULL,
+  `Name` VARCHAR(20) NOT NULL,
+  `address` VARCHAR(80) NOT NULL,
+  `city` VARCHAR(20) NOT NULL,
+  `zipcode` INT NOT NULL,
+  `phoneNumber` BIGINT(10) NOT NULL,
+  `createdAt` DATE NOT NULL,
+  `updatedAt` DATE NOT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE INDEX `phoneNumber_UNIQUE` (`phoneNumber` ASC));
+
+CREATE TABLE `sitedb`.`user` (
+  `userId` VARCHAR(20) NOT NULL,
+  `userName` VARCHAR(20) NOT NULL,
+  `emailId` VARCHAR(30) NOT NULL,
+  `password` VARCHAR(30) NOT NULL,
+  `createdAt` DATE NOT NULL,
+  `updatedAt` DATE NOT NULL,
+  PRIMARY KEY (`userId`),
+  UNIQUE INDEX `emailId_UNIQUE` (`emailId` ASC));
+
+CREATE TABLE `sitedb`.`employee` (
+  `login` VARCHAR(20) NOT NULL);
+
+
+CREATE TABLE `sitedb`.`volunteer` (
+  `login` VARCHAR(20) NOT NULL);
+
+
+CREATE TABLE `sitedb`.`service` (
+  `Id` VARCHAR(20) NOT NULL,
+  `name` VARCHAR(200) NOT NULL,
+  `hours` INT NOT NULL,
+  `conditions` VARCHAR(45) NOT NULL,
+  `createdAt` DATE NOT NULL,
+  `updatedAt` DATE NOT NULL,
+  PRIMARY KEY (`Id`));
+
+
+CREATE TABLE `sitedb`.`shelter` (
+  `shelterId` VARCHAR(20) NOT NULL,
+  `name` VARCHAR(20) NOT NULL,
+  `number of female` INT NOT NULL,
+  `number of male` INT NOT NULL,
+  `number of mixed` INT NOT NULL,
+  `createdAt` DATE NOT NULL,
+  `updatedAt` DATE NOT NULL,
+  PRIMARY KEY (`shelterId`));
+
+CREATE TABLE `sitedb`.`male` (
+  `Status` VARCHAR(20) NOT NULL,
+  `count` INT NOT NULL);
+
+
+CREATE TABLE `sitedb`.`female` (
+  `Status` VARCHAR(20) NOT NULL,
+  `count` INT NOT NULL);
+
+CREATE TABLE `sitedb`.`mixed` (
+  `Status` VARCHAR(20) NOT NULL,
+  `count` INT NOT NULL);
+
+CREATE TABLE `sitedb`.`room` (
+  `roomId` VARCHAR(20) NOT NULL,
+  `shelterId` VARCHAR(20) NOT NULL,
+  `availableroom` INT NOT NULL,
+  `createdAt` DATE NOT NULL,
+  `updatedAt` DATE NOT NULL,
+  PRIMARY KEY (`roomId`));
+
+CREATE TABLE `sitedb`.`foodpantry` (
+  `Id` VARCHAR(20) NOT NULL,
+  `SSN` VARCHAR(20) NOT NULL,
+  `createdAt` DATE NOT NULL,
+  `updatedAt` DATE NOT NULL,
+  PRIMARY KEY (`foodpantryId`));
+
+CREATE TABLE `sitedb`.`client` (
+  `waitlistId` VARCHAR(20) NOT NULL,
+  `Name` VARCHAR(45) NOT NULL,
+  `phoneNumber` BIGINT(10) NOT NULL,
+  `shelterId` VARCHAR(20) NOT NULL,
+  `createdAt` DATE NOT NULL,
+  `updatedAt` DATE NOT NULL,
+  PRIMARY KEY (`shelterId`));
+
+
+CREATE TABLE `sitedb`.`clientservices` (
+  `shelterId` VARCHAR(20) NOT NULL,
+  `kitchenId` VARCHAR(20) NOT NULL,
+  `siteId` VARCHAR(20) NOT NULL,
+  `foodpantryId` VARCHAR(20) NOT NULL,
+  `createdAt` DATE NOT NULL,
+  `updatedAt` DATE NOT NULL,
+  PRIMARY KEY (`shelterId`));
+
+CREATE TABLE `sitedb`.`checkin` (
+  `checkinId` VARCHAR(20) NOT NULL,
+  `userId` VARCHAR(20) NULL,
+  `clientId` VARCHAR(20) NULL,
+  `siteId` VARCHAR(20) NULL,
+  `createdAt` DATE NULL,
+  `updatedAt` DATE NULL,
+  PRIMARY KEY (`checkinId`));
+
+CREATE TABLE `sitedb`.`waitlist` (
+  `Id` VARCHAR(20) NOT NULL,
+  `name` VARCHAR(20) NOT NULL,
+  `roomId` VARCHAR(20) NOT NULL,
+  `clientId` VARCHAR(20) NOT NULL,
+  `userId` VARCHAR(20) NOT NULL,
+  `createdAt` DATE NOT NULL,
+  `updatedAt` DATE NOT NULL,
+  PRIMARY KEY (`userId`));
+
+CREATE TABLE `sitedb`.`soupkitchen` (
+  `kitchenId` VARCHAR(20) NOT NULL,
+  `totalSeats` INT NOT NULL,
+  `location` VARCHAR(20) NOT NULL,
+  `createdAt` DATE NOT NULL,
+  `updatedAt` DATE NOT NULL,
+  PRIMARY KEY (`kitchenId`));
+
+
+CREATE TABLE `sitedb`.`foodbank` (
+  `foodbankId` VARCHAR(20) NOT NULL,
+  `createdAt` DATE NOT NULL,
+  `updatedAt` DATE NOT NULL,
+  PRIMARY KEY (`foodbankId`));
+
+
+CREATE TABLE `sitedb`.`donation` (
+  `donationId` VARCHAR(20) NOT NULL,
+  `foodbankId` VARCHAR(20) NOT NULL,
+  `itemId` VARCHAR(20) NOT NULL,
+  `createdAt` DATE NOT NULL,
+  `updatedAt` DATE NOT NULL,
+  PRIMARY KEY (`donationId`));
+
+CREATE TABLE `sitedb`.`items` (
+  `itemId` VARCHAR(20) NOT NULL,
+  `name` VARCHAR(20) NOT NULL,
+  `number of unit` VARCHAR(20) NOT NULL,
+  `expiryDate` DATE NOT NULL,
+  `createdAt` DATE NOT NULL,
+  `updatedAt` DATE NOT NULL,
+  PRIMARY KEY (`itemId`));
+
+CREATE TABLE `sitedb`.`itemrequests` (
+  `itemId` VARCHAR(20) NOT NULL,
+  `category` VARCHAR(20) NOT NULL,
+  `siteId` VARCHAR(20) NOT NULL,
+  `userId` VARCHAR(20) NOT NULL,
+  `itemId` VARCHAR(20) NOT NULL,
+  `createdAt` DATE NOT NULL,
+  `updatedAt` DATE NOT NULL,
+  PRIMARY KEY (`itemId`));
+
+CREATE TABLE `sitedb`.`open` (
+  `count` INT NOT NULL);
+
+
+CREATE TABLE `sitedb`.`closed` (
+  `count` INT NOT NULL);
+
+
+
+CREATE TABLE `sitedb`.`meal inventory` (
+  `inventoryId` VARCHAR(20) NOT NULL,
+  `number of meals` INT NOT NULL,
+  `meal quantity` VARCHAR(20) NOT NULL,
+  `createdAt` DATE NOT NULL,
+  `updatedAt` DATE NOT NULL,
+  PRIMARY KEY (`waitlistId`));
+
+
+
+
+
+
+
+
+ALTER TABLE `sitedb`.`clientservices` 
+ADD INDEX `fk_shelterId_idx` (`shelterId` ASC),
+ADD INDEX `fk_kitchenId_idx` (`kitchenId` ASC),
+ADD INDEX `fk_siteId_idx` (`siteId` ASC),
+ALTER TABLE `sitedb`.`clientservice` 
+ADD CONSTRAINT `fk_shelterId`
+  FOREIGN KEY (`shelterId`)
+  REFERENCES `sitedb`.`shelter` (`shelterId`)
+  ON DELETE RESTRICT
+  ON UPDATE CASCADE,
+ADD CONSTRAINT `fk_kitchenId`
+  FOREIGN KEY (`kitchenId`)
+  REFERENCES `sitedb`.`soupkitchen` (`kitchenId`)
+  ON DELETE RESTRICT
+  ON UPDATE CASCADE,
+ADD CONSTRAINT `fk_siteId`
+  FOREIGN KEY (`siteId`)
+  REFERENCES `sitedb`.`site` (`siteId`)
+  ON DELETE RESTRICT
+  ON UPDATE CASCADE,
+
+
+
+
+ALTER TABLE `sitedb`.`checkin` 
+ADD INDEX `fk_checkin_Id_idx` (`userId` ASC),
+ADD INDEX `fk_checkin_userId_idx` (`userId` ASC),
+ADD INDEX `fk_checkin_clientId_idx` (`clientId` ASC),
+ADD INDEX `fk_checkin_siteId_idx` (`siteId` ASC);
+ALTER TABLE `sitedb`.`checkin` 
+ADD CONSTRAINT `fk_checkin_Id`
+  FOREIGN KEY (`Id`)
+  REFERENCES `sitedb`.`id` (`Id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ALTER TABLE `sitedb`.`checkin` 
+ADD CONSTRAINT `fk_checkin_userId`
+  FOREIGN KEY (`userId`)
+  REFERENCES `sitedb`.`user` (`userId`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_checkin_clientId`
+  FOREIGN KEY (`clientId`)
+  REFERENCES `sitedb`.`client` (`clientId`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_checkin_siteId`
+  FOREIGN KEY (`siteId`)
+  REFERENCES `sitedb`.`site` (`siteId`)
+  ON DELETE RESTRICT
+  ON UPDATE CASCADE;
+
+
+
+
+
+
+
+
+
+
+ALTER TABLE `sitedb`.`client` 
+ADD CONSTRAINT `fk_client_waitlistId`
+  FOREIGN KEY (`waitlistId`)
+  REFERENCES `sitedb`.`waitlist` (`waitlistId`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_client_shelterId`
+  FOREIGN KEY (`shelterId`)
+  REFERENCES `sitedb`.`shelter` (`shelterId`)
+  ON DELETE RESTRICT
+  ON UPDATE CASCADE,
+ADD CONSTRAINT `fk_client_clienthistory`
+  FOREIGN KEY (`clienthistory`)
+  REFERENCES `sitedb`.`clienthistory` (`clientId`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+
+
+ALTER TABLE `sitedb`.`room` 
+ADD INDEX `fk_room_shelterId_idx` (`roomId` ASC);
+ADD INDEX `fk_room_shelterId_idx` (`shelterId` ASC);
+ALTER TABLE `sitedb`.`room` 
+ADD CONSTRAINT `fk_room_roomId`
+  FOREIGN KEY (`roomId`)
+  REFERENCES `sitedb`.`room` (`roomId`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+ALTER TABLE `sitedb`.`room` 
+ADD CONSTRAINT `fk_room_shelterId`
+  FOREIGN KEY (`shelterId`)
+  REFERENCES `sitedb`.`shelter` (`shelterId`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+
+
+ALTER TABLE `sitedb`.`waitlist` 
+ADD INDEX `fk_wailtlist_roomId_idx` (`roomId` ASC),
+ADD INDEX `fk_waitlist_clientId_idx` (`clientId` ASC),
+ADD INDEX `fk_waitlist_userId_idx` (`userId` ASC);
+ALTER TABLE `sitedb`.`waitlist` 
+ADD CONSTRAINT `fk_wailtlist_roomId`
+  FOREIGN KEY (`roomId`)
+  REFERENCES `sitedb`.`room` (`roomId`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_waitlist_clientId`
+  FOREIGN KEY (`clientId`)
+  REFERENCES `sitedb`.`client` (`clientId`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_waitlist_userId`
+  FOREIGN KEY (`userId`)
+  REFERENCES `sitedb`.`user` (`userId`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+
+
+ALTER TABLE `sitedb`.`itemrequests` 
+ADD INDEX `fk_itemrequests_itemId_idx` (`itemId` ASC),
+ADD INDEX `fk_itemrequests_siteId_idx` (`siteId` ASC),
+ADD INDEX `fk_itemrequests_userId_idx` (`userId` ASC);
+ALTER TABLE `sitedb`.`itemrequests` 
+ADD CONSTRAINT `fk_itemrequests_itemId`
+  FOREIGN KEY (`itemId`)
+  REFERENCES `sitedb`.`item` (`itemId`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_itemrequests_siteId`
+  FOREIGN KEY (`siteId`)
+  REFERENCES `sitedb`.`site` (`siteId`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_itemrequests_userId`
+  FOREIGN KEY (`userId`)
+  REFERENCES `sitedb`.`user` (`userId`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+
+
+ALTER TABLE `sitedb`.`item` 
+ADD INDEX `fk_item_itemId_idx` (`itemId` ASC);
+ALTER TABLE `sitedb`.`item` 
+ADD CONSTRAINT `fk_item_itemId`
+  FOREIGN KEY (`itemId`)
+  REFERENCES `sitedb`.`item` (`itemId`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+
+
+
+
+
+INSERT INTO `sitedb`.`site` (`Id`, `Name`, `address`, `city`, `zipcode`, `phoneNumber`, `createdAt`, `updatedAt`) VALUES ('1', ‘roy', '433 jafferson street', 'riverside', '92501', '9999999999', '2018/04/08', ‘2018/04/08');
+INSERT INTO `sitedb`.`site` (`Id`, `Name`, `address`, `city`, `zipcode`, `phoneNumber`, `createdAt`, `updatedAt`) VALUES ('1', ‘rahil', '193 jafferson street', 'riverside', '92501', '8989898989', '2018/04/08', ‘2018/04/08');
+INSERT INTO `sitedb`.`site` (`Id`, `Name`, `address`, `city`, `zipcode`, `phoneNumber`, `createdAt`, `updatedAt`) VALUES ('1', ‘daniel', '978 jafferson street', 'riverside', '92501', '12121999999', '2018/04/08', '2018/04/08');
+
+
+INSERT INTO `sitedb`.`user` (`userId`, `username`, `emailId`, `password`, `createdAt`, `updatedAt`) VALUES ('435', 'roy12', ‘123@abc.com’, 'qwerty', '2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`user` (`userId`, `username`, `emailId`, `password`, `createdAt`, `updatedAt`) VALUES ('211', 'rahil2', ‘12@abc.com’, 'qenfj', '2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`user` (`userId`, `username`, `emailId`, `password`, `createdAt`, `updatedAt`) VALUES ('766', 'daniel90', ‘1223@abc.com’, 'kfhvfioh', '2018/04/08', ‘2018/04/08’);
+
+
+INSERT INTO `sitedb`.`employee` (`login`) VALUES (‘1');
+INSERT INTO `sitedb`.`volunteer` (`login`) VALUES ('1');
+
+
+INSERT INTO `sitedb`.`service` (`Id`, `name`, `hours`, `conditions`, `createdAt`, `updatedAt`) VALUES ('12', 'roy', '2', 'bad', '2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`service` (`Id`, `name`, `hours`, `conditions`, `createdAt`, `updatedAt`) VALUES ('12', 'rahil', ‘3', 'bad', '2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`service` (`Id`, `name`, `hours`, `conditions`, `createdAt`, `updatedAt`) VALUES ('12', 'daniel', '4', 'good', '2018/04/08', ‘2018/04/08');
+
+
+
+INSERT INTO `sitedb`.`shelter` (`name`, `number of female`, `number of male`, `number of mixed`,  `createdAt`, `updatedAt`) VALUES ('roy', '2', '3', '4', '2018/04/08', ‘2018/04/08');
+INSERT INTO `sitedb`.`shelter` (`name`, `number of female`, `number of male`, `number of mixed`,  `createdAt`, `updatedAt`) VALUES ('rahil', '5', '6', '7', '2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`shelter` (`name`, `number of female`, `number of male`, `number of mixed`,  `createdAt`, `updatedAt`) VALUES ('daniel', '1', '5', '4', '2018/04/08', ‘2018/04/08');
+
+
+INSERT INTO `sitedb`.`male` (`status`, `count`) VALUES ('available', ‘4');
+INSERT INTO `sitedb`.`female` (`status`, `count`) VALUES ('available', ‘5’);
+INSERT INTO `sitedb`.`mixed` (`status`, `count`) VALUES ('available', '9');
+
+
+INSERT INTO `sitedb`.`room` (`roomId`, `shelterId`, `availableroom`, `createdAt`, `updatedAt`) VALUES ('1', '2', '3', '2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`room` (`roomId`, `shelterId`, `availableroom`, `createdAt`, `updatedAt`) VALUES ('15', '12', '2', '2018/04/08', ‘2018/04/08');
+INSERT INTO `sitedb`.`room` (`roomId`, `shelterId`, `availableroom`, `createdAt`, `updatedAt`) VALUES ('23', '1', '7', '2018/04/08', ‘2018/04/08');
+
+
+
+INSERT INTO `sitedb`.`foodpantry` (`Id`, `ssn`,`createdAt`, `updatedAt`) VALUES ('1', '123232321', '2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`foodpantry` (`Id`, `ssn`,`createdAt`, `updatedAt`) VALUES ('2', '023583245', '2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`foodpantry` (`Id`, `ssn`,`createdAt`, `updatedAt`) VALUES ('3', '907832321', '2018/04/08', ‘2018/04/08');
+
+
+INSERT INTO `sitedb`.`client` (`waitlistid`, `name`, `phonenumber`, `shelterId`,`createdAt`, `updatedAt`) VALUES ('1', 'roy', '1232321234', '12','2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`client` (`waitlistid`, `name`, `phonenumber`, `shelterId`,`createdAt`, `updatedAt`) VALUES ('1', 'rahil', '9895467378', ‘67','2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`client` (`waitlistid`, `name`, `phonenumber`, `shelterId`,`createdAt`, `updatedAt`) VALUES ('1', 'daniel', '1278564738', '23','2018/04/08', ‘2018/04/08');
+
+
+INSERT INTO `sitedb`.`clientservices` (`shelterId`, `kitchenId`, `siteId`, `foodpantryId`, `createdAt`, `updatedAt`) VALUES ('1', '1', '1', '1','2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`clientservices` (`shelterId`, `kitchenId`, `siteId`, `foodpantryId`, `createdAt`, `updatedAt`) VALUES ('2', '2', '2', '2','2018/04/08', ‘2018/04/08');
+INSERT INTO `sitedb`.`clientservices` (`shelterId`, `kitchenId`, `siteId`, `foodpantryId`, `createdAt`, `updatedAt`) VALUES ('3', '3', '3', '3','2018/04/08', ‘2018/04/08');
+
+
+
+INSERT INTO `sitedb`.`chekin` (`checkinId`, `userId`, `clienId`, `siteId`,`createdAt`, `updatedAt`) VALUES ('1', ‘1', '1', '1','2018/04/08', ‘2018/04/08');
+INSERT INTO `sitedb`.`chekin` (`checkinId`, `userId`, `clienId`, `siteId`,`createdAt`, `updatedAt`) VALUES ('2', '2', '2', '2','2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`chekin` (`checkinId`, `userId`, `clienId`, `siteId`,`createdAt`, `updatedAt`) VALUES ('3', '3', '3', '3','2018/04/08', ‘2018/04/08');
+
+
+
+INSERT INTO `sitedb`.`waitlist` (`id`, `name`, `roomId`, `clientId`, `userId`, `createdAt`, `updatedAt`) VALUES ('1', 'roy', ‘789', '1', '1', '2018/04/08', ‘2018/04/08’);
+NSERT INTO `sitedb`.`waitlist` (`id`, `name`, `roomId`, `clientId`, `userId`, `createdAt`, `updatedAt`) VALUES ('1', 'rahil', '213', '2', '2', '2018/04/08', ‘2018/04/08’);
+NSERT INTO `sitedb`.`waitlist` (`id`, `name`, `roomId`, `clientId`, `userId`, `createdAt`, `updatedAt`) VALUES ('1', 'daniel', '277', '3', '3', '2018/04/08', ‘2018/04/08');
+
+
+INSERT INTO `sitedb`.`soupkitchen` (`kitchenId`, `totalsheets`, `location`,`createdAt`, `updatedAt`) VALUES ('1', '22', ‘1232 magnolia ave','2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`soupkitchen` (`kitchenId`, `totalsheets`, `location`,`createdAt`, `updatedAt`) VALUES ('1', ‘5', ‘1290 magnolia ave','2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`soupkitchen` (`kitchenId`, `totalsheets`, `location`,`createdAt`, `updatedAt`) VALUES ('1', ‘10’, ’6732 magnolia ave','2018/04/08', ‘2018/04/08’);
+
+
+
+
+INSERT INTO `sitedb`.`food bank` (`foodbankId`,`createdAt`, `updatedAt`) VALUES ('1','2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`food bank` (`foodbankId`,`createdAt`, `updatedAt`) VALUES ('2','2018/04/08', ‘2018/04/08');
+INSERT INTO `sitedb`.`food bank` (`foodbankId`,`createdAt`, `updatedAt`) VALUES ('3','2018/04/08', ‘2018/04/08');
+
+
+INSERT INTO `sitedb`.`donation` (`donationId`, `foodbankId`, `itemId`, `createdAt`, `updatedAt`) VALUES ('1', '2', '3', '2018/04/08', ‘2018/04/08');
+INSERT INTO `sitedb`.`donation` (`donationId`, `foodbankId`, `itemId`, `createdAt`, `updatedAt`) VALUES ('4', '5', '6', '2018/04/08', ‘2018/04/08');
+INSERT INTO `sitedb`.`donation` (`donationId`, `foodbankId`, `itemId`, `createdAt`, `updatedAt`) VALUES ('7', '8', '9', '2018/04/08', ‘2018/04/08');
+
+
+INSERT INTO `sitedb`.`items` (`itemId`, `name`, `number of unit`, `expiry date`,`createdAt`, `updatedAt`) VALUES ('1', ‘roy', '3', ‘2/3/2019‘,'2018/04/08', ‘2018/04/08');
+INSERT INTO `sitedb`.`items` (`itemId`, `name`, `number of unit`, `expiry date`,`createdAt`, `updatedAt`) VALUES ('2', 'rahil', '4', ‘2/3/2019‘,'2018/04/08', ‘2018/04/08');
+INSERT INTO `sitedb`.`items` (`itemId`, `name`, `number of unit`, `expiry date`,`createdAt`, `updatedAt`) VALUES ('1', 'daniel', '6', ‘2/3/2019‘,'2018/04/08', ‘2018/04/08');
+
+
+INSERT INTO `sitedb`.`itemrequests` (`itemId`, `catagory`, `siteId`, `userId`, `itemId`, `createdAt`, `updatedAt`) VALUES ('1', 'deluxe', '2', '3', '4','2018/04/08', ‘2018/04/08’);
+NSERT INTO `sitedb`.`itemrequests` (`itemId`, `catagory`, `siteId`, `userId`, `itemId`, `createdAt`, `updatedAt`) VALUES ('2', 'kingsize', '5', '9', '7','2018/04/08', ‘2018/04/08');
+NSERT INTO `sitedb`.`itemrequests` (`itemId`, `catagory`, `siteId`, `userId`, `itemId`, `createdAt`, `updatedAt`) VALUES ('3', 'queensize', '8', ‘2', '14','2018/04/08', ‘2018/04/08');
+
+
+
+INSERT INTO `sitedb`.`open` (`count`) VALUES ('1');
+INSERT INTO `sitedb`.`closed` (`count`) VALUES (‘1');
+
+
+INSERT INTO `sitedb`.`meal inventory` (`inventoryId`, `number of meals`, `meal quantity`, `createdAt`, `updatedAt`) VALUES ('1', ‘20', '2','2018/04/08', ‘2018/04/08’);
+INSERT INTO `sitedb`.`meal inventory` (`inventoryId`, `number of meals`, `meal quantity`, `createdAt`, `updatedAt`) VALUES ('2', ‘22', '20','2018/04/08', ‘2018/04/08');
+INSERT INTO `sitedb`.`meal inventory` (`inventoryId`, `number of meals`, `meal quantity`, `createdAt`, `updatedAt`) VALUES ('3', ‘24', '12','2018/04/08', ‘2018/04/08');
+
+CREATE PROCEDURE `sitedb`.`aunthenticateusers` (
+  `username` VARCHAR(20)
+  `passcode` VARCHAR(20);
+  `loginresult` INTEGER OUTPUT);
+
+
+
+
+
+
